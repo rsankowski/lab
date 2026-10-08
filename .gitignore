@@ -1,0 +1,14 @@
+# macOS / Python
+.DS_Store
+__pycache__/
+*.log
+
+# Private working notes and prompts
+prompts/
+
+# Claude Code: settings, memory, logs and local instructions
+.claude/
+CLAUDE.md
+CLAUDE.local.md
+.mcp.json
+*.claude.log

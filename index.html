@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Jost:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 fill=%27%23b0123a%27/%3E%3Cpath d=%27M13 7h6v6h6v6h-6v6h-6v-6H7v-6h6z%27 fill=%27white%27/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script src="data/config.js"></script>
+  <script src="data/wos-metrics.js"></script>
+  <script src="data/blog.js"></script>
+  <title>Sankowski Lab</title>
+  <meta name="description" content="Sankowski Lab — neuroimmunology, single-cell and spatial multi-omics.">
+  <script src="assets/js/app.js"></script>
+</head>
+<body data-page="home">
+  <main class="wrap">
+    <section class="hero">
+      <h1 class="hero-title" id="hero-title"></h1>
+      <div class="hero-body grid">
+        <div class="hero-text">
+          <p class="tagline" id="tagline"></p>
+          <p id="intro"></p>
+          <div class="cta-row">
+            <a class="btn" href="publications.html">Publications <span class="arrow">→</span></a>
+            <a class="btn ghost" href="team.html">Team <span class="arrow">→</span></a>
+          </div>
+        </div>
+        <figure class="hero-figure">
+          <img id="hero-img" alt="Microglia in brain tissue, immunohistochemistry">
+          <div id="hero-placeholder" class="hero-placeholder" hidden><span>Add your image in assets/img/ and set heroImage in data/config.js</span></div>
+          <figcaption><span id="fig-caption"></span><span id="fig-affil"></span></figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head grid">
+        <span class="idx">01</span>
+        <h2>Impact</h2>
+        <a class="aside link" href="publications.html">All publications <span class="arrow">→</span></a>
+      </div>
+      <div class="metrics" id="metrics">
+        <div class="metric loading"><span class="label">Citations</span><span class="value">0</span></div>
+        <div class="metric loading"><span class="label">h-index</span><span class="value">0</span></div>
+        <div class="metric loading"><span class="label">Publications</span><span class="value">0</span></div>
+        <div class="metric loading"><span class="label">i10-index</span><span class="value">0</span></div>
+      </div>
+      <div class="metrics-meta" id="metrics-meta"></div>
+      <div class="chart" id="year-chart"></div>
+    </section>
+
+    <section class="section">
+      <div class="section-head grid"><span class="idx">02</span><h2>Research</h2></div>
+      <div class="research" id="research"></div>
+    </section>
+
+    <section class="section">
+      <div class="section-head grid">
+        <span class="idx">03</span>
+        <h2>Recent papers</h2>
+        <a class="aside link" href="publications.html">View all <span class="arrow">→</span></a>
+      </div>
+      <ol class="pubs" id="recent-pubs" style="border-top:1px solid var(--rule)"><li class="status">Loading publications…</li></ol>
+    </section>
+
+    <section class="section">
+      <div class="section-head grid">
+        <span class="idx">04</span>
+        <h2>Journal</h2>
+        <a class="aside link" href="blog.html">All posts <span class="arrow">→</span></a>
+      </div>
+      <ul class="posts" id="latest-posts"></ul>
+    </section>
+
+    <section class="section">
+      <div class="section-head grid">
+        <span class="idx">05</span>
+        <h2>On Bluesky</h2>
+        <a class="aside link" data-bsky-follow href="https://bsky.app/profile/rsankowski.bsky.social" target="_blank" rel="noopener">Follow @rsankowski <span class="arrow">→</span></a>
+      </div>
+      <div class="stream" id="bluesky"><p class="status">Loading posts…</p></div>
+    </section>
+  </main>
+</body>
+</html>

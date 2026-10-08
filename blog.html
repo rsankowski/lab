@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Jost:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 fill=%27%23b0123a%27/%3E%3Cpath d=%27M13 7h6v6h6v6h-6v6h-6v-6H7v-6h6z%27 fill=%27white%27/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script src="data/config.js"></script>
+  <script src="data/blog.js"></script>
+  <title>Blog — Sankowski Lab</title>
+  <script src="assets/js/app.js"></script>
+</head>
+<body data-page="blog">
+  <main class="wrap">
+    <header class="page-head">
+      <h1>Blog</h1>
+      <div class="grid">
+        <span class="label">03 — Journal</span>
+        <p>Paper highlights, conference reports, lab life and open positions.</p>
+      </div>
+    </header>
+    <ul class="posts" id="posts"></ul>
+
+    <section class="section">
+      <div class="section-head grid">
+        <span class="idx">04</span>
+        <h2>On Bluesky</h2>
+        <a class="aside link" data-bsky-follow href="https://bsky.app/profile/rsankowski.bsky.social" target="_blank" rel="noopener">Follow @rsankowski <span class="arrow">→</span></a>
+      </div>
+      <div class="stream" id="bluesky"><p class="status">Loading posts…</p></div>
+    </section>
+  </main>
+</body>
+</html>

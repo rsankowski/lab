@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Jost:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 fill=%27%23b0123a%27/%3E%3Cpath d=%27M13 7h6v6h6v6h-6v6h-6v-6H7v-6h6z%27 fill=%27white%27/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script src="data/config.js"></script>
+  <script src="data/wos-metrics.js"></script>
+  <title>Publications — Sankowski Lab</title>
+  <script src="assets/js/app.js"></script>
+</head>
+<body data-page="publications">
+  <main class="wrap">
+    <header class="page-head">
+      <h1>Publications</h1>
+      <div class="grid">
+        <span class="label">02 — Output</span>
+        <p>Every paper from our ORCID-linked record, updated automatically. Citation counts are live.</p>
+      </div>
+    </header>
+
+    <div class="metrics" id="metrics">
+      <div class="metric loading"><span class="label">Citations</span><span class="value">0</span></div>
+      <div class="metric loading"><span class="label">h-index</span><span class="value">0</span></div>
+      <div class="metric loading"><span class="label">Publications</span><span class="value">0</span></div>
+      <div class="metric loading"><span class="label">i10-index</span><span class="value">0</span></div>
+    </div>
+    <div class="metrics-meta" id="metrics-meta"></div>
+    <div class="chart" id="year-chart"></div>
+
+    <div class="toolbar">
+      <input class="search" id="pub-search" type="search" placeholder="Search title, author, journal" aria-label="Search publications">
+      <div class="filters" id="filters"></div>
+    </div>
+    <div class="count-row"><span class="label">Bibliography</span><span id="pub-count"></span></div>
+    <div id="pub-list"><p class="status">Loading publications…</p></div>
+  </main>
+</body>
+</html>
