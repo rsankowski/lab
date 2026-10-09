@@ -300,7 +300,10 @@
 
   function photo(p) {
     const initials = p.name.split(/\s+/).map((s) => s[0]).slice(0, 2).join("");
-    return `<div class="photo">${p.photo ? `<img src="${esc(p.photo)}" alt="${esc(p.name)}" loading="lazy">` : `<span class="initials">${esc(initials)}</span>`}</div>`;
+    // Initials sit underneath; a missing photo file removes itself and reveals them.
+    return `<div class="photo"><span class="initials">${esc(initials)}</span>${
+      p.photo ? `<img src="${esc(p.photo)}" alt="${esc(p.name)}" loading="lazy" onerror="this.remove()">` : ""
+    }</div>`;
   }
 
   function postRow(p) {
@@ -432,6 +435,13 @@
     const groups = GROUPS.map(([g, label]) => {
       const people = team.filter((p) => p.group === g);
       if (!people.length) return "";
+      if (g === "alumni") {
+        return `
+        <div class="group grid">
+          <span class="label">${label} <span class="muted">(${people.length})</span></span>
+          <ul class="alumni">${people.map((p) => `<li class="rise"><span class="n">${esc(p.name)}</span>${p.role ? `<span class="role">${esc(p.role)}</span>` : ""}</li>`).join("")}</ul>
+        </div>`;
+      }
       return `
         <div class="group grid">
           <span class="label">${label} <span class="muted">(${people.length})</span></span>
