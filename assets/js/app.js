@@ -281,6 +281,24 @@
     return list.map((a) => (a === "…" ? "…" : a.me ? `<b>${esc(a.name)}</b>` : esc(a.name))).join(", ");
   }
 
+  // One card per protocol, linking straight to its page on protocols.io.
+  function protocolCard(w, i) {
+    const id = (w.url.match(/protocols\.io\.([a-z0-9]+)/i) || [])[1] || "";
+    const version = (w.url.match(/\/v(\d+)$/) || [])[1];
+    const extra = (window.PROTOCOLS || []).find((p) => p.id === id) || {};
+    const href = extra.url || w.url;
+    const title = w.title.replace(/\s+v\d+$/i, "");
+    return `
+      <article class="protocol rise">
+        <div class="p-top"><span class="p-n">${String(i + 1).padStart(2, "0")}</span>
+          <span class="label">${(extra.tags || ["Protocol"]).map(esc).join(" · ")}</span></div>
+        <h3><a href="${esc(href)}" target="_blank" rel="noopener">${esc(title)}</a></h3>
+        ${extra.summary ? `<p>${esc(extra.summary)}</p>` : ""}
+        <div class="p-meta">${authorLine(w.authors)}<br>${version ? `Version ${version} · ` : ""}${fmtDate(w.date)}</div>
+        <a class="btn ghost" href="${esc(href)}" target="_blank" rel="noopener">Open on protocols.io <span class="arrow">↗</span></a>
+      </article>`;
+  }
+
   function pubItem(w, hot) {
     const kinds = [w.type !== "article" ? esc(w.type.replace("-", " ")) : "", w.oa ? '<span class="oa">Open access</span>' : ""].filter(Boolean);
     return `
@@ -394,6 +412,10 @@
       $("#pub-count").textContent = `${rows.length} of ${works.length}`;
       $("#methods-feature").hidden = state.type !== "protocol";
       if (!rows.length) return (list.innerHTML = `<p class="status">No publications match.</p>`);
+      if (state.type === "protocol" && state.sort === "date") {
+        list.innerHTML = `<div class="protocols">${rows.map(protocolCard).join("")}</div>`;
+        return initRise();
+      }
       if (state.sort === "cites") {
         rows = [...rows].sort((a, b) => b.cites - a.cites);
         list.innerHTML = `<ol class="pubs">${rows.map((w) => pubItem(w, top.has(w))).join("")}</ol>`;
