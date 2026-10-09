@@ -154,7 +154,7 @@
   const EXCLUDE_TYPES = new Set(["erratum", "paratext", "retraction", "peer-review", "other"]);
 
   async function getWorks() {
-    const cached = store.get("works");
+    const cached = store.get("works:v2");
     if (cached) return cached;
     const select = "id,doi,title,publication_year,publication_date,type,cited_by_count,authorships,primary_location,open_access";
     let cursor = "*";
@@ -169,29 +169,38 @@
     }
     const works = all
       .filter((w) => w.title && !EXCLUDE_TYPES.has(w.type))
-      .map((w) => ({
+      .map((w) => {
+        // protocols.io DOIs (10.17504/protocols.io.*) are indexed as preprints; label them as protocols.
+        const isProtocol = (w.doi || "").includes("10.17504/protocols.io");
+        return {
         title: w.title.replace(/<[^>]+>/g, ""),
         year: w.publication_year,
         date: w.publication_date,
-        type: w.type,
+        type: isProtocol ? "protocol" : w.type,
         cites: w.cited_by_count,
         url: w.doi || w.primary_location?.landing_page_url || w.id,
-        venue: w.primary_location?.source?.display_name || "",
+        venue: w.primary_location?.source?.display_name || (isProtocol ? "protocols.io" : ""),
         oa: !!w.open_access?.is_oa,
         authors: (w.authorships || []).map((a) => ({
           name: a.author?.display_name || "",
           me: (a.author?.orcid || "").endsWith(LAB.orcid),
         })),
-      }));
+      };
+      });
     // Collapse duplicates (e.g. same title indexed twice); keep the most-cited record.
+    // Protocol versions ("… v1", "… v2") collapse to the newest version.
     const byTitle = new Map();
     for (const w of works) {
-      const k = w.title.toLowerCase().replace(/[^a-z0-9]/g, "");
+      const isProtocol = w.type === "protocol";
+      const k = (isProtocol ? w.title.replace(/\s+v\d+$/i, "") : w.title).toLowerCase().replace(/[^a-z0-9]/g, "");
       const prev = byTitle.get(k);
-      if (!prev || w.cites > prev.cites || (w.cites === prev.cites && w.type === "article")) byTitle.set(k, w);
+      const better = isProtocol
+        ? !prev || (w.date || "") > (prev.date || "")
+        : !prev || w.cites > prev.cites || (w.cites === prev.cites && w.type === "article");
+      if (better) byTitle.set(k, w);
     }
     const out = [...byTitle.values()].sort((a, b) => (b.date || "").localeCompare(a.date || ""));
-    store.set("works", out);
+    store.set("works:v2", out);
     return out;
   }
 
@@ -364,10 +373,11 @@
     renderYearChart($("#year-chart"), works);
     const top = new Set([...works].sort((a, b) => b.cites - a.cites).slice(0, 10));
 
-    const state = { q: "", type: "all", sort: "date" };
-    const TYPES = [["all", "All"], ["article", "Articles"], ["review", "Reviews"], ["preprint", "Preprints"], ["other", "Other"]];
+    // publications.html#methods opens the Methods development tab directly.
+    const state = { q: "", type: location.hash === "#methods" ? "protocol" : "all", sort: "date" };
+    const TYPES = [["all", "All"], ["article", "Articles"], ["review", "Reviews"], ["preprint", "Preprints"], ["protocol", "Methods development"], ["other", "Other"]];
     const SORTS = [["date", "Newest"], ["cites", "Most cited"]];
-    const main = new Set(["article", "review", "preprint"]);
+    const main = new Set(["article", "review", "preprint", "protocol"]);
     const btn = (attr, [k, l], on) => `<button data-${attr}="${k}"${on ? ' class="active"' : ""}>${l}</button>`;
     $("#filters").innerHTML =
       TYPES.map((t) => btn("type", t, t[0] === state.type)).join("") +
@@ -382,6 +392,7 @@
         return (w.title + " " + w.venue + " " + w.authors.map((a) => a.name).join(" ")).toLowerCase().includes(q);
       });
       $("#pub-count").textContent = `${rows.length} of ${works.length}`;
+      $("#methods-feature").hidden = state.type !== "protocol";
       if (!rows.length) return (list.innerHTML = `<p class="status">No publications match.</p>`);
       if (state.sort === "cites") {
         rows = [...rows].sort((a, b) => b.cites - a.cites);
